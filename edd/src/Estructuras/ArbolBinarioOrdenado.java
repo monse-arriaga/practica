@@ -1,4 +1,4 @@
-package edd.src.Estructuras;
+/*package edd.src.Estructuras;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -29,7 +29,7 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
                 }
             }
 
-            return v.elemento
+            return v.elemento;
         }
 
 
@@ -50,9 +50,10 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
      * 
      * @return un iterador para iterar el árbol.
      */
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterador();
-    }
+    //@Override
+    //public Iterator<T> iterator() {
+        //return new Iterador();
+    //}
 
-}
+//}
+/** */
