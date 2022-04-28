@@ -134,6 +134,7 @@ public class Practica3 {
     public static void primosQueSuman(int S, int P, int N){
 
     }
+
     public static void N_Reinas(int N){
 
     }
@@ -157,6 +158,7 @@ public class Practica3 {
 	prueba.add(55);
 	prueba.add(20);
 	prueba.add(40);
+    prueba.add(22);
 	prueba.add(43);
 	prueba.add(15);
 	prueba.add(5);
