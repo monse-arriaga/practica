@@ -29,7 +29,7 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
                 }
             }
 
-            return v.elemento
+            return v.elemento;
         }
 
 
