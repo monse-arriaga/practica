@@ -140,17 +140,11 @@ public class Practica3 {
     }
 
     public static void main(String[] args) {
-        //Puedes hacer tus pruebas aqui
-       // Lista <Integer> prueba = new Lista<>();
-        permutacionesCadena("star");
-
-
+      
+	//permutacionesCadena("star");
 
         Lista <Integer> prueba = new Lista<Integer>();
-	Lista <Integer> prueba2 = new Lista<Integer>();
-
-	prueba2.add(4);
-
+	Lista <Integer> prueba2 = new Lista<Integer>();	
 	
 	prueba.add(3);
 	prueba.add(1);
@@ -158,13 +152,40 @@ public class Practica3 {
 	prueba.add(55);
 	prueba.add(20);
 	prueba.add(40);
-    prueba.add(22);
+	prueba.add(22);
 	prueba.add(43);
 	prueba.add(15);
 	prueba.add(5);
+
+	prueba2.add(2);
+	prueba2.add(5);
+	prueba2.add(10);
+	prueba2.add(15);
+	prueba2.add(50);
+	prueba2.add(100);
+	prueba2.add(120);
 	
-        sumaCercana(prueba, 130);
-	sumaCercana(prueba2, 4);
+	ArbolBinarioOrdenado<Integer> a1 = new ArbolBinarioOrdenado<Integer>(prueba2, true);
+	ArbolBinarioCompleto<Integer> a2 = new ArbolBinarioCompleto<Integer>(prueba);  
+	ArbolBinarioOrdenado<Integer> a3 = a1.convertBST(a2);
+
+	//Esto no lo hace bien
+	//a1.add(34);
+	//a1.add(45);
+	//a1.add(832);
+
+	
+	System.out.println("Árbol a1 en in-order: \n" + a1);
+	System.out.println("Árbol a3 en in-order: \n" + a3);
+
+	System.out.println("Hay elemento 2 en a1?: " +a1.search(2));
+	System.out.println("Hay elemento 43 en a1? : " + a1.search(43));
+	System.out.println("Hay elemento 34 en a1? : " + a1.search(34));
+	System.out.println("Hay elemento 55 en a3?: " +a1.search(2));
+	System.out.println("Hay elemento 75 en a3? : " + a1.search(43));
+	
+        //sumaCercana(prueba, 130);
+	//sumaCercana(prueba2, 4);
     }
 
 }
