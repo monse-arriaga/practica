@@ -165,24 +165,124 @@ public class Practica3 {
 	prueba2.add(100);
 	prueba2.add(120);
 	
-	ArbolBinarioOrdenado<Integer> a1 = new ArbolBinarioOrdenado<Integer>(prueba2, true);
-	ArbolBinarioCompleto<Integer> a2 = new ArbolBinarioCompleto<Integer>(prueba);  
-	ArbolBinarioOrdenado<Integer> a3 = a1.convertBST(a2);
-
-	//Esto no lo hace bien
-	//a1.add(34);
-	//a1.add(45);
-	//a1.add(832);
+	ArbolBinarioCompleto<Integer> a1 = new ArbolBinarioCompleto<Integer>(prueba2);
+	ArbolBinarioOrdenado<Integer> a2 = new ArbolBinarioOrdenado<Integer>(prueba2, true);
+	
 
 	
-	System.out.println("Árbol a1 en in-order: \n" + a1);
-	System.out.println("Árbol a3 en in-order: \n" + a3);
+	a2.add(3);
 
-	System.out.println("Hay elemento 2 en a1?: " +a1.search(2));
-	System.out.println("Hay elemento 43 en a1? : " + a1.search(43));
-	System.out.println("Hay elemento 34 en a1? : " + a1.search(34));
-	System.out.println("Hay elemento 55 en a3?: " +a1.search(2));
-	System.out.println("Hay elemento 75 en a3? : " + a1.search(43));
+	System.out.println(a1);
+	System.out.println(a1.size());
+	System.out.println(a1.altura());
+
+	
+	System.out.println();
+
+	System.out.println(a2);
+	System.out.println(a2.size());
+	System.out.println(a2.altura());
+	System.out.println(a2.raiz());
+
+	System.out.println("Buscar 5: " + a2.search(5));
+	System.out.println("Buscar 50: " + a2.search(50));
+	System.out.println("Buscar 120: " + a2.search(120));
+    	System.out.println("Buscar 3: " + a2.search(3));
+	System.out.println("Buscar 57: " + a2.search(57));
+
+	a2.insert(57);
+	System.out.println("Buscar 57: " + a2.search(57));
+	a2.imprimirPreOrder();
+	System.out.println();
+
+	ArbolBinarioOrdenado<Integer> a3 = a2.convertBST(a1);
+	
+	System.out.println(a3);
+
+	ArbolBinarioOrdenado<Integer> a4 = new ArbolBinarioOrdenado<Integer>();
+
+	a4.insert(2);
+	a4.insert(5);
+	a4.insert(10);
+	a4.insert(15);
+	a4.insert(50);
+	a4.insert(100);
+	a4.insert(120);
+
+	System.out.println("a4: \n" + a4);
+
+	a4 = a4.balance();
+
+	System.out.println("a4: \n" + a4);
+
+	System.out.println("Buscar 2: " + a4.search(2));
+	System.out.println("Buscar 5: " + a4.search(5));
+	System.out.println("Buscar 10: " + a4.search(10));
+    	System.out.println("Buscar 15: " + a4.search(15));
+	System.out.println("Buscar 57: " + a4.search(57));
+
+	a4.insert(57);
+
+	System.out.println("Buscar 57: " + a4.search(57));
+
+	a4.delete(2);
+
+	System.out.println(a4);
+
+	System.out.println("Buscar 2: " + a4.search(2));
+
+	a4.delete(15);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 15: " + a4.search(15));
+
+	a4.delete(100);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 100: " + a4.search(100));
+
+	a4.delete(50);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 50: " + a4.search(50));
+	
+	a4.delete(57);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 57: " + a4.search(57));
+	System.out.println("Altura: " + a4.altura());
+
+	System.out.println("\nBalancear: \n");
+	a4 = a4.balance();
+
+	System.out.println(a4);
+
+	System.out.println("Altura: " + a4.altura());
+	
+	a4.delete(10);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 10: " + a4.search(10));
+	System.out.println("Altura: " + a4.altura());
+
+	a4.delete(120);
+	a4.delete(100000);
+
+	System.out.println(a4);
+	
+	System.out.println("Buscar 120: " + a4.search(120));
+	System.out.println("Altura: " + a4.altura());
+
+	a4.delete(5);
+	System.out.println(a4);
+
+	System.out.println("Es vacio?: " + a4.isEmpty());
+	System.out.println("Altura: " + a4.altura());
 	
         //sumaCercana(prueba, 130);
 	//sumaCercana(prueba2, 4);

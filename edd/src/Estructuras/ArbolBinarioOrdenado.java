@@ -12,7 +12,7 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
             Vertice p = raiz;
             while (p!= null) {
                 pila.push(p);
-                p = p.izquierdo;    
+                p = p.izquierdo;
             }
         }
         // falta hasNext
@@ -33,11 +33,26 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
         }
         @Override
         public boolean hasNext() {
-            // TODO Auto-generated method stub
-            return false;
+            if(pila.isEmpty()){
+		return false;
+	    }
+	    else{
+		return true;
+	    }
         }
     }
 
+    /**
+     * Constructor sin parametros
+     */
+    public ArbolBinarioOrdenado(){
+	super();
+    }
+
+    /**
+     * Constructor que recibe una lista y un boolean que representa
+     * si la lista está ordenada o no
+     */
     public ArbolBinarioOrdenado(Lista<T> lista, boolean isSorted ){
         if (isSorted) {
             buildSorted(lista);
@@ -48,8 +63,7 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
 
     }
 
-    private void buildUnsorted(Lista<T> lista) {
-	
+    private void buildUnsorted(Lista<T> lista){
 	Lista<T> lista2 = lista.mergeSort(new Comparator<T>() {
             @Override
             public int compare(T o1, T o2) {
@@ -58,47 +72,33 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
 	});
 
 	buildSorted(lista2);
-       
     }
 
-    private void buildSorted(Lista<T> lista) {
-
-	
+    private void buildSorted(Lista<T> lista){
 	ArrayList<T> lista2 = new ArrayList<>(lista.size());
-	
 	for(T elemento: lista){
 	    lista2.add(elemento);
 	 }
+	
+	this.elementos = lista2.size();
 
 	int ultimo = lista2.size()-1;
-	build(lista2,0,ultimo, null);
+	
+	this.raiz = build(lista2, 0, ultimo, null);
     }
 
-    private Vertice build(ArrayList<T> lista, int inicio, int ultimo, Vertice p){
-	
-	if(ultimo < inicio){
+    private Vertice build(ArrayList<T> lista2, int primero, int ultimo, Vertice v1){
+	if(ultimo < primero){
 	    return null;
 	}
-	
-	int mitad = (inicio+ultimo)/2;
-	
-	Vertice v1 = new Vertice(lista.get(mitad));
 
-	if(raiz == null){
-	    raiz = v1;
-	}
-	else{
-	    v1.padre = p;
-	}
-
-	elementos++;
-	
-	v1.izquierdo = build(lista, inicio, mitad-1, v1);
-	v1.derecho = build(lista, mitad +1 , ultimo, v1);
-	
-	return v1;
-
-   }
+	int mitad = (primero+ultimo)/2;
+	Vertice v = new Vertice(lista2.get(mitad));	
+	v.padre = v1;
+	v.izquierdo = build(lista2, primero, mitad -1, v);
+	v.derecho = build(lista2, mitad +1, ultimo, v);
+	return v;		
+    }
     
     /**
      * Regresa un iterador para iterar el árbol. El árbol se itera en orden.
@@ -110,169 +110,180 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
         return new Iterador();
     }
 
+
+    /**
+     * Añade un elemento al árbol
+     * @param elemento
+     */
     @Override
     public void add(T elemento) {
-        if(elemento == null){
-	    throw new IllegalArgumentException();
+	if(elemento == null){
+	    return;
 	}
 
-	Vertice a = new Vertice(elemento);
-	elementos++;
+	Vertice v = new Vertice(elemento);
 
-	if(isEmpty()){
-	    raiz = a;
+	elementos++;
+	
+	if(this.isEmpty()){
+	    this.raiz = v;
 	}
 	else{
 	    Vertice b = raiz;
-	    while(2>1){
-		if(a.elemento.compareTo(b.elemento) >= 0){ //si a es más grande que b
-		    if(!b.hayIzquierdo()){
-			b.izquierdo = a;
-			a.padre = b;
-			return;
+
+	    while(true){
+		if(v.get().compareTo(b.get())  >= 0){ //si v es más grande o igual al nodo actual
+		    if(b.hayDerecho()){
+			b = b.derecho;
 		    }
 		    else{
-			b = b.izquierdo;
+			b.derecho = v;
+			v.padre = b;
+			return;
 		    }
 		}
-		else if(a.elemento.compareTo(b.elemento) < 0){ //si a es más chico que b
-		    if(!b.hayDerecho()){
-			b.derecho = a;
-			a.padre = b;
-			return;
+		else{ //si v es más chico que el nodo actual
+		    if(b.hayIzquierdo()){
+			b = b.izquierdo;
 		    }
 		    else{
-			b = b.derecho;
+			b.izquierdo = v;
+			v.padre = b;
+			return;
 		    }
 		}
 	    }
+	    
+	}
+    }
+
+    /**
+     * Método que busca un elemento en el árbol
+     * Regresa el vértice si lo encuentra, regresa null en otro caso
+     * @param T elemento
+     * @return el vértice con el elemento buscado
+     */
+    public Vertice search(T elemento){
+	if(elemento == null || this.isEmpty()){
+	    return null;
+	}
+
+	return searchAux(this.raiz, elemento);
+	
+    }
+
+    /**
+     * Método auxiliar recursivo para encontrar un elemento en el árbol
+     * en caso de encontrarlo regresa al vértice con el elemento, de otra
+     * forma regresa null
+     * @param elemento
+     * @param vertice a compararse
+     * @return el vertice buscado
+     */
+    private Vertice searchAux(Vertice v, T elemento){
+	if(v == null){
+	    return null;
+	}
+	if(v.get().compareTo(elemento) == 0){
+	    return v;
+	}
+	else if(v.get().compareTo(elemento) > 0){
+	    return searchAux(v.izquierdo, elemento);
+	}
+	else{
+	    return searchAux(v.derecho, elemento);
 	}
 	
     }
 
-
+   
 
     /**
-     * Construye un arbol binario ordenado a partir de un arbol binario
-     * @param un arbol binario 
-     * @return el arbol binario ordenado correspondiente
+     * Método que convierte un árbol en un árbol binario ordenado
+     * Regresa el árbol binario ordenado correspondiente
+     * @param arbol binario
+     * @return arbol binario ordenado
      */
     public ArbolBinarioOrdenado convertBST(ArbolBinario t1){
-	Lista<T> lista = BFS(t1);
+	Lista<T> lista = convertAux(t1);
 	ArbolBinarioOrdenado<T> arbol = new ArbolBinarioOrdenado<T>(lista, false);
 	return arbol;
     }
 
-
     /**
-     * Método auxuliar de convertBST. Recorre un árbol con BFS
-     * guarda cada elemento del aŕbol en una lista y la regresa
+     * Método que auxiliar de convertBST, recorre el árbol 
+     * y mete los elementos a una lista
      * @param arbol binario
-     * @param lista  
+     * @return lista
      */
-    private Lista<T> BFS(ArbolBinario t1){
-
-	Lista<T> lista = new Lista<T>();
+    private Lista<T> convertAux(ArbolBinario t1){
 	
 	if(t1.isEmpty()){
-            return null;
-        }
-	
-        Cola<Vertice> a = new Cola<Vertice>();
-        a.push(t1.raiz);
-
-	Vertice temp = t1.raiz;
-	
-	lista.add(temp.get());
-	
-        while (a.cabeza != null) {
-            Vertice b = a.pop();
-            if (b.hayIzquierdo()) {
-                a.push(b.izquierdo);
-		lista.add(b.izquierdo.elemento);
-            }
-            if (b.hayDerecho()) {
-                a.push(b.derecho);
-		lista.add(b.derecho.elemento);
-            }
-            if(!b.hayIzquierdo() || !b.hayDerecho()){
-                
-            }
-        }
-        return lista;
-
-    }
-
-    /**
-     * Método DFS. Recorre el árbol en DFS in-order
-     * Devuelve una lista con los elementos del árbol
-     * @return Lista
-     */
-    public Lista<T> DFS(){
-	if(this.isEmpty()){
 	    return null;
 	}
-
+       
 	Lista<T> lista = new Lista<T>();
-	Pila<Vertice> pila = new Pila<Vertice>();
-	Vertice actual = raiz;
 
-	while(!pila.isEmpty() || actual != null){
-	    while(actual != null){
-		pila.push(actual);
-		actual = actual.izquierdo;
-	    }
+	@SuppressWarnings("unchecked")
+	Iterator<T> it = t1.iterator();
 
-	    actual = pila.pop();
-	    
-	    lista.add(actual.get());
-
-	    actual = actual.derecho;
+	T elem = it.next();
+	lista.add(elem);
+	
+	while(it.hasNext()){
+	    elem = it.next();
+	    lista.add(elem);
 	}
 	return lista;
-     }
-
-    /**
-     * Método que busca un elemento en el árbol
-     * Regresa true si lo encuentra, false si no lo encuentra
-     * @param T elemento
-     * @return boolean
-     */
-    public boolean search(T elemento){
-	if(this.isEmpty()){
-	    return false;
-	}
-	if(elemento == null){
-	    return false;
-	}
-
-	Vertice aux = raiz;
-
-	while(aux != null){
-	    if(elemento.compareTo(aux.elemento) == 0){
-		return true;
-	    }
-	    else if(elemento.compareTo(aux.elemento) > 0){
-		if(aux.hayDerecho()){
-		    aux = aux.derecho;
-		}
-		else{
-		    return false;
-		}
-	    }
-	    else{
-		if(aux.hayIzquierdo()){
-		    aux = aux.izquierdo;
-		}
-		else{
-		    return false;
-		}
-	    }
-	}
-
-	return false;
     }
 
+    /**
+     * Método que imprime el árbol en preorden
+     */
+    public void imprimirPreOrder(){
+	preOrder(this.raiz);
+    }
+
+    /**
+     * Método recursivo para imprimir el árbol en preorden
+     */
+    private void preOrder(Vertice v){
+	if(v == null){
+	    return;
+	}
+
+	System.out.print(v.get() + ", ");
+	preOrder(v.izquierdo);
+	preOrder(v.derecho);
+    }
+
+    /**
+     * Método auxiliar recursivo que recorre el árbol
+     * en inOrder y agrega los elementos a una lista
+     * @param vertice
+     * @param lista
+     */
+    private void inOrder(Vertice v, Lista<T> lista){
+	if(v == null){
+	    return;
+	}
+	inOrder(v.izquierdo, lista);
+	lista.add(v.get());
+	inOrder(v.derecho, lista);	
+    }
+
+    /**
+     * Método que balancea el árbol binario
+     * regresa el árbol binario balanceado
+     * @return arbol
+     */
+    public ArbolBinarioOrdenado balance(){
+	Lista<T> lista = new Lista<T>();
+	inOrder(this.raiz, lista);
+	ArbolBinarioOrdenado<T> arbol = new ArbolBinarioOrdenado<T>(lista,true);
+	return arbol;
+    }
+    
     /**
      * Método que inserta un elemento al árbol
      * @param T elemento
@@ -280,23 +291,120 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
     public void insert(T elemento){
 	this.add(elemento);
     }
-    
+
+    /**
+     * Método que elimina un vertice en el árbol
+     * Regresa true si se eliminó el elemento, false si
+     * el elemento no fue encontrado en el árbol
+     * @param elemento a eliminar
+     * @return boolean
+     */
     @Override
     public boolean delete(T elemento) {
-	 return  true;
-        }
+	
+        Vertice v1 = search(elemento);
+	if(v1 == null){
+	    return false;
+	}
 
+	elementos--;
+	
+	if(v1.hayIzquierdo() && v1.hayDerecho()){
+	    Vertice v2 = intercambiaEliminable(v1);
+	    eliminarVertice(v2);
+	    return true;
+	}
+	else{
+	    eliminarVertice(v1);
+	    return true;
+	}
+       
+     }
+
+    /**
+     * Método que intercambia el elemento del parámetro
+     * con el elemento mínimo del subárbol derecho del parámetro
+     * @param el vértice a intercambiar
+     * @return vértice con elemento mínimo
+     */
+    private Vertice intercambiaEliminable(Vertice v){
+	Vertice v2 = minimoEnSubArbol(v.derecho);
+	v.elemento = v2.elemento;
+	return v2;
+    }
+
+    /**
+     * Método que regresa el vértice con el elemento mínimo
+     * de un árbol o subárbol
+     * @param vértice raíz del subárbol
+     * @param elemento mínimo del subárbol
+     */
+    private Vertice minimoEnSubArbol(Vertice v){
+	if(!v.hayIzquierdo()){
+	    return v;
+	}
+	return minimoEnSubArbol(v.izquierdo);
+    }
+
+    /**
+     * Método que elimina un vértice que tiene 
+     * a lo máximo un hijo
+     * @param el vértice a eliminar
+     */
+    private void eliminarVertice(Vertice v){
+
+	Vertice u;
+	
+	if(v.hayIzquierdo()){
+	    u = v.izquierdo;
+	}
+	else if(v.hayDerecho()){
+	    u = v.derecho;
+	}
+	else{
+	    u = null;
+	}
+	
+	if(v.padre != null){
+	    if(v.get().compareTo(v.padre.get()) >= 0){
+		v.padre.derecho = u;
+		if(u != null){
+		    u.padre = v.padre;
+		}
+	    }
+	    else{
+		v.padre.izquierdo = u;
+		if(u != null){
+		    u.padre = v.padre;
+		}
+	    }
+	    
+	}
+	else{
+	    this.raiz = u;
+	    if(u != null){
+		u.padre = null;
+	    }
+	}
+	
+    }
+    
     @Override
     public T pop() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
+    
+    /**
+     * Método que convierte el árbol a una cadena
+     * Se representa el árbol en inOrder
+     */
     @Override
     public String toString(){
 	String s;
 	Lista<T> lista = new Lista<T>();
-	lista = this.DFS();
+	inOrder(this.raiz, lista);
 	s = lista.toString();
 	return s;
     }
