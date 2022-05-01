@@ -63,6 +63,12 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
 
     }
 
+
+    /**
+     * Método auxiliar del constructor cuando la lista no está ordenada
+     * se ordena usando merge sort y se llama a buildSorted
+     * @param lista
+     */
     private void buildUnsorted(Lista<T> lista){
 	Lista<T> lista2 = lista.mergeSort(new Comparator<T>() {
             @Override
@@ -74,6 +80,11 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
 	buildSorted(lista2);
     }
 
+
+    /**
+     * Método auxiliar del constructor cuando la lista está ordenada
+     * @param lista
+     */
     private void buildSorted(Lista<T> lista){
 	ArrayList<T> lista2 = new ArrayList<>(lista.size());
 	for(T elemento: lista){
@@ -87,6 +98,15 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>> extends ArbolBinario<
 	this.raiz = build(lista2, 0, ultimo, null);
     }
 
+
+    /**
+     * Método auxiliar de buildSorted que construye el árbol recursivamente
+     * se toma el valor de la mitad en cada iteración y se agrega al aŕbol
+     * @param arraylist
+     * @param int indice izquierdo
+     * @param int indice derecho
+     * @param vértice padre
+     */
     private Vertice build(ArrayList<T> lista2, int primero, int ultimo, Vertice v1){
 	if(ultimo < primero){
 	    return null;
