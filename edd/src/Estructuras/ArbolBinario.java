@@ -191,6 +191,14 @@ public abstract class ArbolBinario<T> implements Collection<T> {
             return false;
         }
 
+	/**
+	 * toString
+	 */
+	@Override public String toString(){
+	    String s = elemento.toString();
+	    return s;
+	}
+
     }
 
     /** La raíz del árbol. */
