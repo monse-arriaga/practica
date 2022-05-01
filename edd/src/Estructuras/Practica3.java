@@ -1,10 +1,12 @@
 package edd.src.Estructuras;
 import java.util.Iterator;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Practica3 {
 
     static Lista <String> listaCadena = new Lista<>();
+    static Lista <String> xd = new Lista<>();
 
 
     
@@ -84,87 +86,210 @@ public class Practica3 {
 
     }
 
-    public static String reverseString(char[] s) {
-        int len = s.length;
-    
-    
-        for (int i=0; i < (len/2); i++)
-        {
-            char l = s[i];
-            s[i] = s[len-i-1];
-            s[len-i-1] = l;
-        }
-    
-        String nuevoString = new String(s);
-        return nuevoString;
-    }
 
 
     public static String swap(String a, int i, int j) {
         char temp;
-        char[] charArray = a.toCharArray();
-        temp = charArray[i] ;
-        charArray[i] = charArray[j];
-        charArray[j] = temp;
-        return String.valueOf(charArray);
+        char[] arregloDeCaracteres = a.toCharArray();
+        temp = arregloDeCaracteres[i] ;
+        arregloDeCaracteres[i] = arregloDeCaracteres[j];
+        arregloDeCaracteres[j] = temp;
+        return String.valueOf(arregloDeCaracteres);
     }
 
-    public static void permute(String str, int l, int r)
-    {
+    public static Lista<String> permutacionesCadenaLaPrecuela(String str, int l, int r){
+
         if (l == r)
-            System.out.println(str);
-        else
+        {
+            if(!xd.contains(str)){
+                xd.add(str);
+            }
+        } else
         {
             for (int i = l; i <= r; i++)
             {
                 str = swap(str,l,i);
-                permute(str, l+1, r);
+                permutacionesCadenaLaPrecuela(str, l+1, r);
                 str = swap(str,l,i);
             }
         }
+        return xd;
     }
 
     public static void permutacionesCadena(String cadena){
     int r= cadena.length();
-     permute(cadena, 0, r-1);
+     System.out.println(permutacionesCadenaLaPrecuela(cadena, 0, r-1));
     }
 
 
+    public static int[] criba(int modulo, int S, int [] arreglo){
+
+
+        if(modulo<S){
+            for(int i=0;i<=S-1;i++){
+                if(arreglo[i]%modulo==0&&arreglo[i]!=modulo){
+                    arreglo[i]=0;
+                }   
+        }
+        criba(modulo+1, S, arreglo);
+        }
+        arreglo[S-1]=0;
+        arreglo[0]=0;
+        return arreglo;
+       
+      
+    }
+
+  
+
+    public static int[] arregloSinCeros(int P, int S){
+       
+        int [] arreglo = new int[S];
+        int contador=0;
+
+
+        for(int i=0;i<=S-1;i++){
+            contador++;
+            arreglo[i]=contador;                 
+       }
+
+         criba(2,S,arreglo);
+
+         if(P!=2){
+             int i =0;
+             while(i < P ){
+                 arreglo[i]=0;
+                 i++;
+             }
+        }
+
+        int[] arregloSinCeros = Arrays.stream(arreglo).filter(num -> num != 0).toArray();
+        return arregloSinCeros;        
+
+    }
+
+    public static void primosQueSumanLaSecuela(int [] arreglo, Lista <Integer> sol, int ultimoPrimo , int suma, int S, int N){
+        
+
+            if(sol.size()==N&&suma==S){
+               System.out.println(sol);
+                
+            }else if(sol.size()==N)
+                return;
+
+                for(int i=ultimoPrimo+1;i<arreglo.length;i++){
+
+                    //System.out.println(i+" " );               
+                    if(suma+arreglo[i]<=S){
+
+                        sol.add(arreglo[i]);
+                        primosQueSumanLaSecuela(arreglo, sol, i, suma+arreglo[i], S, N);
+                        //System.out.print(sol+" ");
+                        //System.out.print(i+" n " );
+
+                        if(sol.size()==1){
+                            sol.empty();
+                            primosQueSumanLaSecuela(arreglo, sol, i, suma, S, N);
+                        }
+                        
+                        if(!sol.isEmpty()){
+                            sol.pop();
+                        } else return;
+                        
+                    }
+                   
+                   
+                }
+        }
+
+          
+        
+        
+
+    
 
     public static void primosQueSuman(int S, int P, int N){
+        Lista <Integer> sol = new Lista<>();
 
+       primosQueSumanLaSecuela(arregloSinCeros(P, S), sol, -1, 0, S, N);
+
+
+    }
+
+    static void imprimirSolucion(int tablero[][], int N)
+    {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++)
+                System.out.print(" " + tablero[i][j]
+                        + " ");
+            System.out.println();
+        }
+    }
+ 
+    static boolean esSeguro(int tablero[][], int row, int col, int N)
+    {
+        int i, j;
+        for (i = 0; i < col; i++)
+            if (tablero[row][i] == 1)
+                return false;
+ 
+        
+        for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+            if (tablero[i][j] == 1)
+                return false;
+             
+        for (i = row, j = col; j >= 0 && i < N; i++, j--)
+            if (tablero[i][j] == 1)
+                return false;
+ 
+        return true;
+    }
+
+
+    public static boolean NReinasLaPrecuela(int tablero[][], int col, int N)
+    {
+        if (col >= N)
+            return true;
+ 
+        for (int i = 0; i < N; i++) {
+            //Si es seguro poner a la reina en la posición i, ponla
+            if (esSeguro(tablero, i, col, N)) {
+                tablero[i][col] = 1;
+ 
+                if (NReinasLaPrecuela(tablero, col + 1, N))
+                    return true;
+ 
+                //backtrack si la condición es falsa
+                tablero[i][col] = 0;
+            }
+        }
+        return false;
     }
 
     public static void N_Reinas(int N){
+        int[][] tablero = new int[N][N];
 
-    }
+       /* for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(tablero[i][j] + " ");
+            }
+  
+            System.out.println();}*/
+
+            
+        if (!NReinasLaPrecuela(tablero, 0, N)) {
+            System.out.print("La solución no existe!");
+            return;
+        }
+ 
+        imprimirSolucion(tablero, N);
+}
 
     public static void main(String[] args) {
         //Puedes hacer tus pruebas aqui
-       // Lista <Integer> prueba = new Lista<>();
-        permutacionesCadena("star");
+        permutacionesCadena("oso");
 
-
-
-        Lista <Integer> prueba = new Lista<Integer>();
-	Lista <Integer> prueba2 = new Lista<Integer>();
-
-	prueba2.add(4);
-
-	
-	prueba.add(3);
-	prueba.add(1);
-	prueba.add(99);
-	prueba.add(55);
-	prueba.add(20);
-	prueba.add(40);
-    prueba.add(22);
-	prueba.add(43);
-	prueba.add(15);
-	prueba.add(5);
-	
-        sumaCercana(prueba, 130);
-	sumaCercana(prueba2, 4);
+ 
     }
 
 }
