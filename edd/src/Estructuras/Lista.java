@@ -192,6 +192,7 @@ public class Lista<T> implements Collection<T> {
      * @return El elemento a sacar.
      */
     public T pop(){
+
         T valor = ultimo.elemento;
         ultimo = ultimo.anterior;
         ultimo.siguiente = null;
