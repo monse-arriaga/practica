@@ -287,9 +287,9 @@ public class Practica3 {
 
     static float raizCuadrada(double numero, int precision)
     {
-        double inicio = 0, finall = numero;
+        double inicio = 0;
         double mid;
-
+        double finall = numero;
         double res = 0.0;
 
         
@@ -335,7 +335,7 @@ public class Practica3 {
         N_Reinas(8);
         primosQueSuman(100, 7, 4);
         permutacionesCadena("oso");
-        sqrtBusqBin(2.8);
+        sqrtBusqBin(2.884);
 
  
     }
