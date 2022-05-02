@@ -285,13 +285,14 @@ public class Practica3 {
         imprimirSolucion(tablero, N);
 }
 
-    static float raizCuadrada(int numero, int precision)
+    static float raizCuadrada(double numero, int precision)
     {
-        int inicio = 0, finall = numero;
-        int mid;
+        double inicio = 0, finall = numero;
+        double mid;
 
         double res = 0.0;
 
+        
         while (inicio <= finall) {
             mid = (inicio + finall) / 2;
 
@@ -325,7 +326,7 @@ public class Practica3 {
         return (float)res;
     }
 
-    public static void sqrtBusqBin(int raiz){
+    public static void sqrtBusqBin(double raiz){
     System.out.println(raizCuadrada(raiz, 5));
     }
 
@@ -334,7 +335,7 @@ public class Practica3 {
         N_Reinas(8);
         primosQueSuman(100, 7, 4);
         permutacionesCadena("oso");
-        sqrtBusqBin(50);
+        sqrtBusqBin(2.8);
 
  
     }
