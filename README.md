@@ -1,10 +1,4 @@
-# PrograIntroGit
-## Este es un subtitulo
+Integrantes:
+1. Arriaga Santana Estela Monserrat ----- No. Cuenta: 319044357
+2. Main Cerezo Asahel Said ------- No. Cuenta: 319260658
 
-
-Ya vine a arreglar tu README!!!!! xdxdxdxdxdxdxdxd
-
-
-[Tutorial ->](https://github.com/UlmoMacias/tutorial-github-es)
-
-[Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
