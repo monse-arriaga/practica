@@ -285,9 +285,52 @@ public class Practica3 {
         imprimirSolucion(tablero, N);
 }
 
+    static float raizCuadrada(int numero, int precision)
+    {
+        int inicio = 0, finall = numero;
+        int mid;
+
+        double res = 0.0;
+
+        while (inicio <= finall) {
+            mid = (inicio + finall) / 2;
+
+            if (mid * mid == numero) {
+                res = mid;
+                break;
+            }
+
+
+            if (mid * mid < numero) {
+                inicio = mid + 1;
+                res = mid;
+            }
+
+
+            else {
+                finall = mid - 1;
+            }
+        }
+
+
+        double incremento = 0.1;
+        for (int i = 0; i < precision; i++) {
+            while (res * res <= numero) {
+                res += incremento;
+            }
+
+            res = res - incremento;
+            incremento = incremento / 10;
+        }
+        return (float)res;
+    }
+
     public static void main(String[] args) {
         //Puedes hacer tus pruebas aqui
+        N_Reinas(8);
+        primosQueSuman(100, 7, 4);
         permutacionesCadena("oso");
+        System.out.println(raizCuadrada(50, 5));
 
  
     }
