@@ -325,12 +325,16 @@ public class Practica3 {
         return (float)res;
     }
 
+    public static void sqrtBusqBin(int raiz){
+    System.out.println(raizCuadrada(raiz, 5));
+    }
+
     public static void main(String[] args) {
         //Puedes hacer tus pruebas aqui
         N_Reinas(8);
         primosQueSuman(100, 7, 4);
         permutacionesCadena("oso");
-        System.out.println(raizCuadrada(50, 5));
+        sqrtBusqBin(50);
 
  
     }
